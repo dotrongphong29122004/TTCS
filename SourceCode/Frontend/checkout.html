@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh Toán | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <div id="checkoutFlow" class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button onclick="window.history.back()"
+              class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i> Quay lại giỏ hàng
+      </button>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Thanh Toán</h1>
+
+      <div class="mb-8 flex items-center justify-center">
+        <div class="flex items-center">
+          <div id="step1Indicator" class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-600 text-white font-bold">1</div>
+          <span class="ml-2 font-semibold">Thông tin</span>
+        </div>
+        <div class="w-24 h-1 bg-gray-300 mx-4"></div>
+        <div class="flex items-center">
+          <div id="step2Indicator" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 text-gray-600 font-bold">2</div>
+          <span id="step2Text" class="ml-2 text-gray-500">Thanh toán</span>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          
+          <form id="infoForm" class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <i data-lucide="truck" class="w-6 h-6 text-amber-600"></i> Thông tin giao hàng
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên *</label>
+                <input type="text" id="checkoutName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none" placeholder="Nguyễn Văn A">
+              </div>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại *</label>
+                  <input type="tel" id="checkoutPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none" placeholder="0912345678">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <input type="email" id="checkoutEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none" placeholder="example@email.com">
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Địa chỉ cụ thể *</label>
+                <textarea id="checkoutAddress" required rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none resize-none" placeholder="Số nhà, tên đường..."></textarea>
+              </div>
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Tỉnh/Thành phố *</label>
+                  <select id="citySelect" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-white">
+                    <option value="">Chọn Tỉnh/Thành phố</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Quận/Huyện *</label>
+                  <select id="districtSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-gray-50">
+                    <option value="">Chọn Quận/Huyện</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Phường/Xã *</label>
+                  <select id="wardSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-gray-50">
+                    <option value="">Chọn Phường/Xã</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold transition-colors">
+              Tiếp tục
+            </button>
+          </form>
+
+          <form id="paymentForm" class="hidden bg-white rounded-xl shadow-sm p-6 mt-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-6 h-6 text-amber-600"></i> Phương thức thanh toán
+            </h2>
+            <div class="space-y-3">
+              <label class="flex items-center p-4 border-2 border-amber-600 rounded-lg cursor-pointer bg-amber-50">
+                <input type="radio" name="paymentMethod" value="cod" checked class="w-5 h-5 text-amber-600">
+                <span class="ml-3 font-medium">Thanh toán khi nhận hàng (COD)</span>
+              </label>
+              <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-amber-600 transition-colors">
+                <input type="radio" name="paymentMethod" value="banking" class="w-5 h-5 text-amber-600">
+                <span class="ml-3 font-medium">Chuyển khoản ngân hàng</span>
+              </label>
+            </div>
+            <div class="flex gap-3 mt-6">
+              <button type="button" id="backToInfoBtn"
+                      class="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                Quay lại
+              </button>
+              <button type="submit"
+                      class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold transition-colors">
+                Hoàn tất đơn hàng
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Đơn hàng</h2>
+            <div id="checkoutItemsList" class="space-y-3 mb-4 pb-4 border-b max-h-64 overflow-y-auto"></div>
+            <div class="space-y-2 mb-4 pb-4 border-b text-sm">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính</span>
+                <span id="checkoutSubtotal">0₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển</span>
+                <span id="checkoutShipping">Miễn phí</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-lg font-bold text-gray-900">
+              <span>Tổng cộng</span>
+              <span id="checkoutTotal" class="text-amber-600">0₫</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="successFlow" class="hidden min-h-screen bg-gray-50 items-center justify-center py-12">
+    <div class="max-w-md w-full mx-4">
+      <div class="bg-white rounded-2xl shadow-sm p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="check-circle" class="w-12 h-12 text-green-600"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Đặt hàng thành công!</h2>
+        <p class="text-gray-600 mb-6">Cảm ơn bạn đã mua hàng. Chúng tôi sẽ liên hệ trong thời gian sớm nhất.</p>
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <p class="text-sm text-gray-600 mb-1">Mã đơn hàng</p>
+          <p id="fullOrderId" class="text-xl font-bold text-gray-900"></p>
+        </div>
+        <button onclick="window.location.href='index.html'"
+                class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors">
+          Về trang chủ
+        </button>
+        <button onclick="window.location.href='orders.html'"
+                class="w-full mt-3 border-2 border-amber-600 text-amber-600 py-3 rounded-lg font-semibold transition-colors hover:bg-amber-50">
+          Xem đơn hàng của tôi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/checkout.js"></script>
+</body>
+</html>

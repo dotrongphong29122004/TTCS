@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Chủ | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="assets/css/chatbot.style.css"> 
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <div class="min-h-screen bg-gray-50">
+    <section class="bg-gradient-to-r from-amber-50 to-orange-50 py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Nội Thất Hiện Đại
+              <br />
+              <span class="text-amber-600">Cho Ngôi Nhà Của Bạn</span>
+            </h1>
+            <p class="text-lg text-gray-600 mb-6">
+              Khám phá bộ sưu tập đồ nội thất cao cấp với thiết kế tinh tế và chất lượng vượt trội
+            </p>
+            <button onclick="window.location.href='products.html'" class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg font-semibold flex items-center gap-2 transition-colors">
+              Xem sản phẩm
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+          <div class="hidden md:block">
+            <img
+              src="https://images.unsplash.com/photo-1759722668253-1767030ad9b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBzb2ZhJTIwbGl2aW5nJTIwcm9vbXxlbnwxfHx8fDE3Njk3NjYyMDh8MA&ixlib=rb-4.1.0&q=80&w=1080"
+              alt="Modern living room"
+              class="rounded-2xl shadow-2xl w-full"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-gray-900">Sản Phẩm Nổi Bật</h2>
+          <button onclick="window.location.href='products.html'" class="text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1">
+            Xem tất cả
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+        
+        <div id="featuredProductsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-amber-600">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">
+          Đăng Ký Nhận Tin Khuyến Mãi
+        </h2>
+        <p class="text-amber-100 mb-6">
+          Nhận thông tin về sản phẩm mới và ưu đãi đặc biệt
+        </p>
+        <div class="flex gap-2 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Email của bạn"
+            class="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white text-gray-900"
+          />
+          <button class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+            Đăng ký
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/index.js"></script>
+  <script src="assets/js/chatbot.view.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

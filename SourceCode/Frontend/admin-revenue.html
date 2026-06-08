@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doanh Thu | Admin NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Be Vietnam Pro', sans-serif; }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      opacity: 0.08;
+    }
+    .stat-card.amber::before { background: #d97706; }
+    .stat-card.green::before  { background: #16a34a; }
+    .stat-card.blue::before   { background: #2563eb; }
+    .stat-card.purple::before { background: #7c3aed; }
+
+    .tab-btn {
+      transition: all 0.2s;
+      position: relative;
+    }
+    .tab-btn.active {
+      color: #d97706;
+      background: #fff7ed;
+      font-weight: 600;
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: #d97706;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b; }
+    .rank-2 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-color: #94a3b8; }
+    .rank-3 { background: linear-gradient(135deg, #fef2f2, #fde8d8); border-color: #d97706; }
+
+    .trend-up   { color: #16a34a; }
+    .trend-down { color: #dc2626; }
+
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+
+    .chart-wrapper { position: relative; }
+
+    .year-btn { transition: all 0.15s; }
+    .year-btn.active { background: #d97706; color: white; font-weight: 600; }
+    .year-btn:not(.active):hover { background: #fef3c7; }
+
+    /* Custom scrollbar cho bảng */
+    .table-scroll::-webkit-scrollbar { height: 6px; }
+    .table-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    /* Custom scrollbar dọc cho danh sách sản phẩm */
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f8fafc; border-radius: 3px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+
+    /* Product rank badge */
+    .prod-rank-1 { background: linear-gradient(135deg,#fef3c7,#fde68a); color: #92400e; border: 1px solid #f59e0b; }
+    .prod-rank-2 { background: linear-gradient(135deg,#f1f5f9,#e2e8f0); color: #475569; border: 1px solid #94a3b8; }
+    .prod-rank-3 { background: linear-gradient(135deg,#ffedd5,#fed7aa); color: #9a3412; border: 1px solid #f97316; }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <div id="admin-sidebar-container"></div>
+
+  <div class="ml-64 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm h-16 flex items-center justify-between px-8 border-b border-gray-200 sticky top-0 z-30">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="trending-up" class="w-4 h-4 text-amber-600"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-gray-900 leading-none">Báo Cáo Doanh Thu</h1>
+          <p class="text-xs text-gray-400 mt-0.5">Cập nhật theo thời gian thực</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-400" id="lastUpdated"></span>
+        <button onclick="refreshAll()" id="refreshBtn"
+                class="flex items-center gap-2 text-sm text-gray-600 hover:text-amber-600 border border-gray-200 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all">
+          <i data-lucide="refresh-cw" class="w-4 h-4" id="refreshIcon"></i>
+          Làm mới
+        </button>
+      </div>
+    </header>
+
+    <main class="p-8 flex-1">
+      <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- ─── KPI Cards ─── -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Tháng này -->
+          <div class="stat-card amber bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+                <i data-lucide="calendar" class="w-5 h-5 text-amber-600"></i>
+              </div>
+              <span id="trendThang" class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-500">—</span>
+            </div>
+            <p class="text-2xl font-bold text-gray-900 mb-1" id="kpiThangNay">—</p>
+            <p class="text-xs text-gray-500 font-medium">Doanh thu tháng này</p>
+            <p class="text-xs text-gray-400 mt-1" id="kpiDonThang">— đơn hàng</p>
+          </div>
+
+          <!-- Năm nay -->
+          <div class="stat-card green bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                <i data-lucide="bar-chart-2" class="w-5 h-5 text-green-600"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-bold text-gray-900 mb-1" id="kpiNamNay">—</p>
+            <p class="text-xs text-gray-500 font-medium">Doanh thu năm nay</p>
+            <p class="text-xs text-gray-400 mt-1" id="kpiDonNam">— đơn hàng</p>
+          </div>
+
+          <!-- Tổng tích lũy -->
+          <div class="stat-card blue bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                <i data-lucide="wallet" class="w-5 h-5 text-blue-600"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-bold text-gray-900 mb-1" id="kpiTongDT">—</p>
+            <p class="text-xs text-gray-500 font-medium">Tổng doanh thu tích lũy</p>
+            <p class="text-xs text-gray-400 mt-1" id="kpiTongDon">— đơn hoàn thành</p>
+          </div>
+
+          <!-- Khách hàng -->
+          <div class="stat-card purple bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                <i data-lucide="users" class="w-5 h-5 text-purple-600"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-bold text-gray-900 mb-1" id="kpiKhach">—</p>
+            <p class="text-xs text-gray-500 font-medium">Khách hàng đã mua</p>
+            <p class="text-xs text-gray-400 mt-1" id="kpiAvgOrder">Trung bình — / đơn</p>
+          </div>
+        </div>
+
+        <!-- ─── Biểu đồ doanh thu ─── -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <!-- Tabs -->
+          <div class="flex items-center justify-between px-6 pt-5 border-b border-gray-100">
+            <div class="flex gap-1">
+              <button class="tab-btn active px-4 py-2.5 text-sm rounded-t-lg" onclick="switchTab('week', this)">
+                Theo Tuần
+              </button>
+              <button class="tab-btn px-4 py-2.5 text-sm text-gray-500 rounded-t-lg" onclick="switchTab('month', this)">
+                Theo Tháng
+              </button>
+              <button class="tab-btn px-4 py-2.5 text-sm text-gray-500 rounded-t-lg" onclick="switchTab('year', this)">
+                Theo Năm
+              </button>
+            </div>
+            <!-- Year picker (chỉ hiện khi tab month) -->
+            <div id="yearPickerWrap" class="hidden items-center gap-2">
+              <span class="text-sm text-gray-500">Năm:</span>
+              <div class="flex gap-1" id="yearPicker"></div>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <div class="chart-wrapper" style="height: 320px;">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Bảng chi tiết + Top khách hàng ─── -->
+        <div class="grid lg:grid-cols-5 gap-6">
+
+          <!-- Bảng chi tiết doanh thu -->
+          <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                <i data-lucide="table" class="w-4 h-4 text-amber-600"></i>
+                Chi Tiết Doanh Thu
+              </h3>
+              <span id="tableLabel" class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">12 tuần gần nhất</span>
+            </div>
+            <div class="table-scroll overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-100">
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider" id="thPeriod">Tuần</th>
+                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Doanh Thu</th>
+                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Đơn HT</th>
+                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Đơn Hủy</th>
+                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Tổng Đơn</th>
+                  </tr>
+                </thead>
+                <tbody id="revenueTable" class="divide-y divide-gray-50">
+                  <tr><td colspan="5" class="py-12 text-center text-gray-400">
+                    <div class="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  </td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Top khách hàng -->
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                <i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>
+                Top Khách Hàng
+              </h3>
+              <select id="topLimit" onchange="loadTopCustomers()"
+                      class="text-xs border border-gray-200 rounded-lg px-2 py-1 outline-none text-gray-600">
+                <option value="5">Top 5</option>
+                <option value="10" selected>Top 10</option>
+                <option value="20">Top 20</option>
+              </select>
+            </div>
+            <div id="topCustomersList" class="p-4 space-y-3 max-h-[480px] overflow-y-auto">
+              <div class="py-8 text-center">
+                <div class="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Top sản phẩm doanh thu cao nhất ─── -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="font-bold text-gray-900 flex items-center gap-2">
+              <i data-lucide="package" class="w-4 h-4 text-orange-500"></i>
+              Top Sản Phẩm Doanh Thu Cao Nhất
+            </h3>
+            <div class="flex items-center gap-3">
+              <!-- Lọc theo danh mục -->
+              <select id="productCategoryFilter" onchange="loadTopProducts()"
+                      class="text-xs border border-gray-200 rounded-lg px-2 py-1 outline-none text-gray-600 bg-white">
+                <option value="">Tất cả danh mục</option>
+                <option value="Phòng khách">Phòng khách</option>
+                <option value="Phòng ngủ">Phòng ngủ</option>
+                <option value="Phòng ăn">Phòng ăn</option>
+                <option value="Phòng làm việc">Phòng làm việc</option>
+              </select>
+              <select id="productLimit" onchange="loadTopProducts()"
+                      class="text-xs border border-gray-200 rounded-lg px-2 py-1 outline-none text-gray-600 bg-white">
+                <option value="5">Top 5</option>
+                <option value="10" selected>Top 10</option>
+                <option value="20">Top 20</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Chart sản phẩm + bảng -->
+          <div class="grid lg:grid-cols-2 gap-0 divide-x divide-gray-100">
+
+            <!-- Cột trái: Horizontal bar chart -->
+            <div class="p-6">
+              <p class="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Biểu đồ doanh thu</p>
+              <div style="height: 340px;">
+                <canvas id="productChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Cột phải: Bảng xếp hạng -->
+            <div class="p-6">
+              <p class="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Bảng xếp hạng chi tiết</p>
+              <div id="topProductsList" class="space-y-2.5 max-h-[340px] overflow-y-auto pr-1 custom-scroll">
+                <div class="py-8 text-center">
+                  <div class="w-8 h-8 border-4 border-orange-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer thống kê nhanh -->
+          <div class="border-t border-gray-100 px-6 py-3 bg-gray-50 grid grid-cols-3 gap-4">
+            <div class="text-center">
+              <p class="text-xs text-gray-400">Tổng SP có doanh thu</p>
+              <p class="font-bold text-gray-900 text-sm" id="productStatTotal">—</p>
+            </div>
+            <div class="text-center border-x border-gray-200">
+              <p class="text-xs text-gray-400">SP bán chạy nhất</p>
+              <p class="font-bold text-orange-600 text-sm truncate px-2" id="productStatBest">—</p>
+            </div>
+            <div class="text-center">
+              <p class="text-xs text-gray-400">Tổng lượt bán (top)</p>
+              <p class="font-bold text-gray-900 text-sm" id="productStatSold">—</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/admin-revenue.js"></script>
+</body>
+</html>

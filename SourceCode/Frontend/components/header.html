@@ -1,0 +1,159 @@
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-xl">N</span>
+          </div>
+          <span class="text-xl font-bold text-gray-900">NoiThat.vn</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-gray-700 hover:text-amber-600 transition-colors">Trang chủ</a>
+        <a href="products.html" class="text-gray-700 hover:text-amber-600 transition-colors">Sản phẩm</a>
+        <a href="#" class="text-gray-700 hover:text-amber-600 transition-colors">Về chúng tôi</a>
+        <a href="#" class="text-gray-700 hover:text-amber-600 transition-colors">Liên hệ</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <button class="p-2 text-gray-700 hover:text-amber-600 transition-colors">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+        
+        <button id="cartBtn" class="relative p-2 text-gray-700 hover:text-amber-600 transition-colors" onclick="window.location.href='cart.html'">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+        </button>
+        
+        <div id="loggedOutState" class="hidden items-center">
+          <button onclick="openAuthModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+            Đăng nhập
+          </button>
+        </div>
+
+        <div id="loggedInState" class="hidden relative">
+          <button id="userMenuBtn" class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center">
+              <i data-lucide="user" class="w-5 h-5 text-white"></i>
+            </div>
+            <span id="headerUserName" class="hidden md:block font-medium text-gray-900"></span>
+          </button>
+
+          <div id="userMenuDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
+            <div class="px-4 py-3 border-b border-gray-100">
+              <p id="dropdownUserName" class="font-semibold text-gray-900"></p>
+              <p id="dropdownUserEmail" class="text-sm text-gray-500"></p>
+              <span id="adminBadge" class="hidden inline-block mt-1 px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded">Admin</span>
+            </div>
+            
+            <button onclick="window.location.href='account.html'" class="w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="settings" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Quản lý tài khoản</span>
+            </button>
+
+            <button id="userOrdersBtn" onclick="window.location.href='orders.html'" class="w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="package" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Đơn hàng của tôi</span>
+            </button>
+
+            <button id="adminDashboardBtn" onclick="window.location.href='dashboard.html'" class="hidden w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="layout-dashboard" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Dashboard</span>
+            </button>
+
+            <button id="adminProductsBtn" onclick="window.location.href='admin.html'" class="hidden w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="shield-check" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Quản lý sản phẩm</span>
+            </button>
+
+            <button id="adminOrdersBtn" onclick="window.location.href='admin-orders.html'" class="hidden w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="clipboard-list" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Quản lý đơn hàng</span>
+            </button>
+
+            <button id="adminUsersBtn" onclick="window.location.href='admin-users.html'" class="hidden w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors">
+              <i data-lucide="users" class="w-4 h-4 text-gray-500"></i>
+              <span class="text-gray-700">Quản lý khách hàng</span>
+            </button>
+
+            <div class="border-t border-gray-100 mt-2 pt-2">
+              <button onclick="handleLogout()" class="w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors text-red-600">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Đăng xuất</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="md:hidden p-2 text-gray-700 hover:text-amber-600 transition-colors">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative">
+    <button id="closeAuthModalBtn" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="p-8">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-white font-bold text-2xl">N</span>
+        </div>
+        <h2 id="authTitle" class="text-2xl font-bold text-gray-900">Đăng Nhập</h2>
+        <p id="authSubtitle" class="text-gray-600 mt-2">Chào mừng bạn trở lại!</p>
+      </div>
+
+      <form id="authForm" class="space-y-4">
+        <div id="nameField" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
+          <div class="relative">
+            <i data-lucide="user" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            <input type="text" id="nameInput" name="name" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none" placeholder="Nguyễn Văn A">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            <input type="email" id="emailInput" name="email" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none" placeholder="example@email.com">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Mật khẩu</label>
+          <div class="relative">
+            <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            <input type="password" id="passwordInput" name="password" required class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none" placeholder="••••••••">
+            <button type="button" id="togglePasswordBtn" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <i data-lucide="eye" id="passwordEyeIcon" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="confirmPasswordField" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Xác nhận mật khẩu</label>
+          <div class="relative">
+            <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            <input type="password" id="confirmPasswordInput" name="confirmPassword" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm"></div>
+
+        <button type="submit" id="submitAuthBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors">Đăng nhập</button>
+      </form>
+
+      <div class="mt-6 text-center">
+        <p class="text-gray-600">
+          <span id="toggleAuthText">Chưa có tài khoản?</span>
+          <button id="toggleAuthModeBtn" class="text-amber-600 hover:text-amber-700 font-semibold ml-1">Đăng ký ngay</button>
+        </p>
+      </div>
+    </div>
+  </div>

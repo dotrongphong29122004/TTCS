@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đơn Hàng Của Tôi | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script><link rel="stylesheet" href="assets/css/chatbot.style.css">
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button onclick="window.history.back()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        Quay lại
+      </button>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Đơn Hàng Của Tôi</h1>
+
+      <div id="emptyOrdersMessage" class="hidden bg-white rounded-2xl shadow-sm p-12 text-center">
+        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="package" class="w-12 h-12 text-gray-400"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Chưa có đơn hàng nào</h2>
+        <p class="text-gray-600 mb-6">Bạn chưa thực hiện giao dịch nào trên hệ thống.</p>
+        <button onclick="window.location.href='products.html'"
+                class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+          Mua sắm ngay
+        </button>
+      </div>
+
+      <div id="myOrdersList" class="space-y-6"></div>
+    </div>
+  </div>
+
+  <!-- Load api.js trước, sau đó main.js, cuối cùng page script -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/orders.js"></script>
+  <script src="assets/js/chatbot.view.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+</body>
+</html>

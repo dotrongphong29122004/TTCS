@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mua Ngay | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <!-- Checkout flow -->
+  <div id="directCheckoutFlow" class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button onclick="window.history.back()"
+              class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i> Quay lại
+      </button>
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Thanh Toán</h1>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <form id="directForm" class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <i data-lucide="truck" class="w-6 h-6 text-amber-600"></i> Thông tin giao hàng
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại *</label>
+                <input type="tel" id="directPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none" placeholder="0912345678">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Địa chỉ cụ thể *</label>
+                <textarea id="directAddress" required rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none resize-none" placeholder="Số nhà, tên đường..."></textarea>
+              </div>
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Tỉnh/Thành phố *</label>
+                  <select id="citySelect" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-white">
+                    <option value="">Chọn Tỉnh/Thành phố</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Quận/Huyện *</label>
+                  <select id="districtSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-gray-50">
+                    <option value="">Chọn Quận/Huyện</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Phường/Xã *</label>
+                  <select id="wardSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none bg-gray-50">
+                    <option value="">Chọn Phường/Xã</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p class="text-sm text-blue-800">
+                <strong>Lưu ý:</strong> Chúng tôi sẽ liên hệ qua số điện thoại để xác nhận đơn hàng.
+              </p>
+            </div>
+            <button type="submit" class="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold transition-colors">
+              Hoàn tất đơn hàng
+            </button>
+          </form>
+        </div>
+
+        <!-- Product summary -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Đơn hàng</h2>
+            <div class="mb-4 pb-4 border-b">
+              <div class="flex gap-3">
+                <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                  <img id="prodImg" class="w-full h-full object-cover" src="" alt="product"
+                       onerror="this.src='https://placehold.co/64?text=NT'">
+                </div>
+                <div class="flex-1">
+                  <p id="prodName" class="font-medium text-sm text-gray-900 mb-1"></p>
+                  <p class="text-sm text-gray-500">Số lượng: <span id="prodQty"></span></p>
+                  <p id="prodPrice" class="text-sm text-amber-600 font-semibold mt-1"></p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4 pb-4 border-b text-sm">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính</span>
+                <span id="directSubtotal">0₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển</span>
+                <span id="directShipping">0₫</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-lg font-bold text-gray-900">
+              <span>Tổng cộng</span>
+              <span id="directTotal" class="text-amber-600">0₫</span>
+            </div>
+            <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p class="text-xs text-green-800">✓ Thanh toán khi nhận hàng (COD)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success screen -->
+  <div id="directSuccessFlow" class="hidden min-h-screen bg-gray-50 items-center justify-center py-12">
+    <div class="max-w-md w-full mx-4">
+      <div class="bg-white rounded-2xl shadow-sm p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="check-circle" class="w-12 h-12 text-green-600"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Đặt hàng thành công!</h2>
+        <p class="text-gray-600 mb-6">Cảm ơn bạn đã mua hàng. Chúng tôi sẽ liên hệ trong thời gian sớm nhất.</p>
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <p class="text-sm text-gray-600 mb-1">Mã đơn hàng</p>
+          <p id="directOrderId" class="text-xl font-bold text-gray-900"></p>
+        </div>
+        <button onclick="window.location.href='index.html'"
+                class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors">
+          Về trang chủ
+        </button>
+        <button onclick="window.location.href='orders.html'"
+                class="w-full mt-3 border-2 border-amber-600 text-amber-600 py-3 rounded-lg font-semibold transition-colors hover:bg-amber-50">
+          Xem đơn hàng của tôi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/direct-checkout.js"></script>
+</body>
+</html>

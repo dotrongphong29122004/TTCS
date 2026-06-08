@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giỏ Hàng | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="assets/css/chatbot.style.css">
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button onclick="window.history.back()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        Tiếp tục mua hàng
+      </button>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Giỏ Hàng (<span id="cartCountHeader">0</span> sản phẩm)</h1>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          
+          <div id="emptyCartMessage" class="hidden bg-white rounded-2xl shadow-sm p-12 text-center">
+            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="shopping-cart" class="w-12 h-12 text-gray-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Giỏ hàng trống</h2>
+            <p class="text-gray-600 mb-6">Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
+            <button onclick="window.location.href='products.html'" class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+              Mua sắm ngay
+            </button>
+          </div>
+
+          <div id="cartItemsList" class="space-y-4"></div>
+          
+        </div>
+
+        <div id="cartSummaryCol" class="lg:col-span-1">
+          <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Tóm tắt đơn hàng</h2>
+            
+            <div class="space-y-4 mb-6 pb-6 border-b border-gray-100">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính</span>
+                <span id="cartSubtotal" class="font-medium">0₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển</span>
+                <span id="cartShipping" class="font-medium text-green-600">Miễn phí</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between text-lg font-bold text-gray-900 mb-6">
+              <span>Tổng cộng</span>
+              <span id="cartTotal" class="text-amber-600">0₫</span>
+            </div>
+            
+            <button id="checkoutBtn" onclick="window.location.href='checkout.html'" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold transition-colors mb-4">
+              Thanh toán
+            </button>
+            <button onclick="window.location.href='products.html'" class="w-full bg-white border-2 border-gray-200 text-gray-700 hover:border-amber-600 hover:text-amber-600 py-3 rounded-lg font-semibold transition-colors">
+              Tiếp tục mua hàng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/cart.js"></script>
+  <script src="assets/js/chatbot.view.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+</body>
+</html>

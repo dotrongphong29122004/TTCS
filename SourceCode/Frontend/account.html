@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Tài Khoản | NoiThat.vn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50">
+  <div id="header-placeholder"></div>
+
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button onclick="window.history.back()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        Quay lại
+      </button>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Quản Lý Tài Khoản</h1>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Profile -->
+        <div class="bg-white rounded-2xl shadow-sm p-8">
+          <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <i data-lucide="user" class="w-6 h-6 text-amber-600"></i>
+            Thông Tin Cá Nhân
+          </h2>
+
+          <div class="flex flex-col items-center mb-8">
+            <div class="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center text-3xl font-bold text-amber-600">
+              <span id="avatarLetter">U</span>
+            </div>
+          </div>
+
+          <form id="profileForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
+              <input type="text" id="profileName" required
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input type="email" id="profileEmail" disabled
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 outline-none">
+            </div>
+            <div id="adminBadgeBox" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p class="font-semibold text-amber-800">Tài khoản Admin</p>
+              <p class="text-sm text-amber-700">Bạn có quyền quản lý sản phẩm và đơn hàng.</p>
+            </div>
+            <button type="submit"
+                    class="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
+              <i data-lucide="save" class="w-5 h-5"></i>
+              Lưu thay đổi
+            </button>
+          </form>
+        </div>
+
+        <!-- Change password -->
+        <div class="bg-white rounded-2xl shadow-sm p-8">
+          <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <i data-lucide="lock" class="w-6 h-6 text-amber-600"></i>
+            Đổi Mật Khẩu
+          </h2>
+          <form id="passwordForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Mật khẩu hiện tại</label>
+              <input type="password" required
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Mật khẩu mới</label>
+              <input type="password" required
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Xác nhận mật khẩu mới</label>
+              <input type="password" required
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none">
+            </div>
+            <button type="submit"
+                    class="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors">
+              Đổi mật khẩu
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/pages/account.js"></script>
+</body>
+</html>
